@@ -15,7 +15,36 @@ from reportlab.pdfgen import canvas
 from werkzeug.utils import secure_filename
 
 ROOT_DIR = Path(__file__).resolve().parent
-DATA_DIR = Path(os.getenv("PLATEVISION_DATA_DIR", ROOT_DIR))
+
+
+def resolve_data_dir():
+    explicit_dir = os.getenv("PLATEVISION_DATA_DIR")
+    if explicit_dir:
+        return Path(explicit_dir)
+
+    candidate_dirs = []
+
+    # Hugging Face Spaces can mount persistent storage or buckets under /data.
+    if Path("/data").exists():
+        candidate_dirs.append(Path("/data/platevision"))
+
+    # On Spaces without attached storage, prefer /tmp over writing into the app layer.
+    if os.getenv("SPACE_ID"):
+        candidate_dirs.append(Path("/tmp/platevision"))
+
+    candidate_dirs.append(ROOT_DIR)
+
+    for candidate_dir in candidate_dirs:
+        try:
+            candidate_dir.mkdir(parents=True, exist_ok=True)
+            return candidate_dir
+        except OSError:
+            continue
+
+    return ROOT_DIR
+
+
+DATA_DIR = resolve_data_dir()
 UPLOAD_FOLDER = Path(os.getenv("PLATEVISION_UPLOAD_DIR", DATA_DIR / "uploads"))
 REPORTS_FOLDER = Path(os.getenv("PLATEVISION_REPORTS_DIR", DATA_DIR / "reports"))
 INSTANCE_FOLDER = Path(os.getenv("PLATEVISION_INSTANCE_DIR", DATA_DIR / "instance"))
