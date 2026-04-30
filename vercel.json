@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "style.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "script.js",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/detect",
+      "dest": "api/index.py"
+    },
+    {
+      "src": "/detections",
+      "dest": "api/index.py"
+    },
+    {
+      "src": "/report/(.*)",
+      "dest": "api/index.py"
+    },
+    {
+      "src": "/uploads/(.*)",
+      "dest": "api/index.py"
+    },
+    {
+      "src": "/reports/(.*)",
+      "dest": "api/index.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}

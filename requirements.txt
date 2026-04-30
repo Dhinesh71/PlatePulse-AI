@@ -1,0 +1,9 @@
+flask
+flask-cors
+flask-sqlalchemy
+easyocr
+opencv-python-headless
+reportlab
+werkzeug
+numpy
+gunicorn
