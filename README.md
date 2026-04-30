@@ -1,12 +1,11 @@
 ---
 title: PlateVision AI
-emoji:
 colorFrom: blue
 colorTo: green
 sdk: docker
 app_port: 7860
 pinned: false
-short_description: OCR-based vehicle number plate detection with Flask, EasyOCR, and OpenCV.
+short_description: Flask OCR vehicle plate detection demo.
 ---
 
 # PlateVision AI
