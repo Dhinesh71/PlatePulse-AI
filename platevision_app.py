@@ -83,7 +83,14 @@ with app.app_context():
 def get_ocr_reader():
     global _reader
     if _reader is None:
-        _reader = easyocr.Reader(["en"], gpu=False, model_storage_dir=str(MODEL_FOLDER))
+        try:
+            _reader = easyocr.Reader(
+                ["en"],
+                gpu=False,
+                model_storage_directory=str(MODEL_FOLDER),
+            )
+        except TypeError:
+            _reader = easyocr.Reader(["en"], gpu=False)
     return _reader
 
 
